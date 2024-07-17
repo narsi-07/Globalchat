@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+    
+</head>
+<body>
+    <div class="wrapper"></div>
+    <input class="message" type="text" placeholder="Enter message and press enter"/>
+    <div class="initModal">
+        <h3>What's your name?</h3>
+        <input type="text" class="username" placeholder="Enter your name and press enter"/>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+    <script>
+
+        
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyCMKDVzhYaCAqPYeV_kZC8ki9wGLe3lUC4",
+            authDomain: "mogo-2c3ca.firebaseapp.com",
+            databaseURL: "https://mogo-2c3ca-default-rtdb.firebaseio.com",
+            projectId: "mogo-2c3ca",
+            storageBucket: "mogo-2c3ca.appspot.com",
+            messagingSenderId: "491544897510",
+            appId: "1:491544897510:web:388c48208b7cb7e443d827",
+            measurementId: "G-JZ0S5EF9M9"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        var fb = firebase.database().ref();
+        var messages = fb.child("messages");
+        var wrap = $('.wrapper');
+        var input = $('input.message');
+        var usernameInput = $('input.username');
+
+        var user = [];
+        var userColors = {};
+        var colors = ['#e74c3c', '#3498db', '#2ecc71', '#9b59b6', '#f1c40f', '#e67e22', '#1abc9c'];
+
+        (function($) {
+            $.sanitize = function(input) {
+                var output = input.replace(/<script[^>]*?>.*?<\/script>/gi, '').
+                            replace(/<[\/\!]*?[^<>]*?>/gi, '').
+                            replace(/<style[^>]*?>.*?<\/style>/gi, '').
+                            replace(/<![\s\S]*?--[ \t\n\r]*>/gi, '');
+                return output;
+            };
+        })(jQuery);
+
+        usernameInput.on('keyup', function(e) {
+            if (e.keyCode === 13 && usernameInput.val().length > 0) {
+                var getTxt = usernameInput.val();
+                user.push(getTxt);
+                usernameInput.val('');
+                $('.initModal').css('display', 'none');
+                console.log(user);
+            }
+        });
+
+        input.on('keyup', function(e) {
+            var curUsername = user.join();
+            if (e.keyCode === 13 && input.val().length > 0) {
+                var getTxt = input.val();
+                messages.push({
+                    user: curUsername,
+                    message: getTxt
+                });
+                input.val('');
+            }
+        });
+
+        messages.limitToLast(100).on("child_added", function(snap) {
+            var messageUser = snap.val().user;
+            var isMyMessage = messageUser === user.join();
+            var messageClass = isMyMessage ? 'my-message' : 'user-message';
+
+            if (!userColors[messageUser]) {
+                userColors[messageUser] = colors[Math.floor(Math.random() * colors.length)];
+            }
+            
+            var usernameDiv = isMyMessage ? '' : '<div class="username" style="color:' + userColors[messageUser] + ';">' + $.sanitize(messageUser) + '</div>';
+            wrap.append('<li class="' + messageClass + '">' + usernameDiv + '<div class="message-content">' + $.sanitize(snap.val().message) + '</div></li>');
+            window.scrollTo(0, document.body.scrollHeight);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,132 @@
+        *, *:before, *:after, ul, li, a, button, input, h1, h2, h3, h4, h5, h6, p, img, image, svg, path, g {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: transparent;
+            border: none;
+            text-decoration: none;
+            font-family: 'Roboto';
+            user-select: none;
+            list-style: none;
+        }
+
+        .swipes-shadow-one {
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.12);
+        }
+        .swipes-shadow-two {
+            box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+        }
+        .swipes-shadow-three {
+            box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+        }
+        .swipes-shadow-four {
+            box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+        }
+        .swipes-shadow-five {
+            box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: #eee;
+            font-family: 'Roboto';
+        }
+
+        .wrapper {
+            width: 100%;
+            max-width: 850px;
+            margin: 0 auto;
+            padding-bottom: 70px;
+            overflow-x: hidden;
+            word-break: break-all;
+        }
+
+        li {
+            display: flex;
+            flex-direction: column;
+            padding: 10px 20px;
+            color: #34495e;
+            word-break: break-all;
+            margin: 5px 0;
+            border-radius: 10px;
+            max-width: 80%;
+            word-wrap: break-word;
+            align-self: flex-start;
+        }
+
+        .username {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        li.user-message {
+            background: linear-gradient(15deg, #000000 0%, #000000 100%);
+            color: white;
+            background-color: #dfe6e9;
+            text-align: left;
+            margin-right: auto;
+            width: 240px;
+        }
+
+        li.my-message {
+            background: linear-gradient(15deg, #1c1b1b 0%, #000000 100%);
+            color: white;
+            background-color: #74b9ff;
+            text-align: right;
+            margin-left: auto;
+            align-self: flex-end;
+            width: 200px;
+        }
+
+        input.message {
+            border-radius: 20px;
+            width: 100%;
+            max-width: 850px;
+            position: fixed;
+            bottom: 0;
+            height: 60px;
+            background-color: #fff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.12);
+            padding: 0 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        input.message:focus {
+            outline: none;
+        }
+
+        .initModal {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .initModal h3 {
+            font-weight: 300;
+            color: #777;
+        }
+
+        .initModal input.username {
+            width: 350px;
+            height: 60px;
+            background-color: #eee;
+            padding: 0 15px;
+            margin-top: 25px;
+            color: #444;
+        }
+
+        .initModal input.username:focus {
+            outline: none;
+        }
+    
