@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free4talk - Chat with Strangers</title>
+    <title>Free4talk - Connect with Strangers</title>
     <meta name="description" content="Free4talk is a platform to chat with global strangers. Connect and chat with new people from around the world. Join now!">
-    <meta name="keywords" content="Free4talk, freefortalk, chat with strangers,free4talk app, global chat, online chat, meet new people, connect with strangers, online chat">
+    <meta name="keywords" content="Free4talk, freefortalk, connect with strangers, free4talk app, global chat, online video call, meet new people, connect with strangers, online chat">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://free4talk.xyz">
     <link rel="stylesheet" href="styles.css" media="all" onload="this.media='all'">
     <link rel="preload" href="styles.css" as="style">
-
     <link rel="icon" href="https://free4talk.xyz/images/og-image.jpg" type="image/x-icon">
 
     <!-- Open Graph Meta Tags -->
@@ -41,6 +40,7 @@
     }
     </script>
 
+  
 </head>
 <body>
     <header>
@@ -48,6 +48,20 @@
         <h1>Welcome to Free4talk</h1>
         <p>Chat with global strangers and connect with new people from around the world.</p>
     </header>
+    <div class="group-container">
+        <div class="group" data-group="English">English Practice</div>
+        <div class="group" data-group="Hindi">Hindi Practice</div>
+        <div class="group" data-group="Spanishs">Spanish Practice</div>
+        <div class="group" data-group="French Practice">French Practice</div>
+        <div class="group" data-group="German Practice">German Practice</div>
+        <div class="group" data-group="Japanese Practice">Japanese Practice</div>
+        <div class="group" data-group="Chinese Practice">Chinese Practice</div>
+        <div class="group" data-group="Korean Practice">Korean Practice</div>
+        <div class="group" data-group="Portuguese Practice">Portuguese Practice</div>
+        <div class="group" data-group="Russian Practice">Russian Practice</div>
+      
+      
+    </div>
     <div class="wrapper"></div>
     <input class="message" type="text" placeholder="Enter message and press enter"/>
    
@@ -58,80 +72,122 @@
     </div>
 
     <!-- Load scripts asynchronously -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" async></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js" async></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js" async></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Your web app's Firebase configuration
-            var firebaseConfig = {
-                apiKey: "AIzaSyCMKDVzhYaCAqPYeV_kZC8ki9wGLe3lUC4",
-                authDomain: "mogo-2c3ca.firebaseapp.com",
-                databaseURL: "https://mogo-2c3ca-default-rtdb.firebaseio.com",
-                projectId: "mogo-2c3ca",
-                storageBucket: "mogo-2c3ca.appspot.com",
-                messagingSenderId: "491544897510",
-                appId: "1:491544897510:web:388c48208b7cb7e443d827",
-                measurementId: "G-JZ0S5EF9M9"
-            };
-            // Initialize Firebase
-            firebase.initializeApp(firebaseConfig);
-            var fb = firebase.database().ref();
-            var messages = fb.child("messages");
-            var wrap = $('.wrapper');
-            var input = $('input.message');
-            var usernameInput = $('input.username');
+ <!-- Load scripts asynchronously with defer -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" defer></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js" defer></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js" defer></script>
 
-            var user = [];
-            var userColors = {};
-            var colors = ['#e74c3c', '#3498db', '#2ecc71', '#9b59b6', '#f1c40f', '#e67e22', '#1abc9c'];
+<script>
+    window.onload = function() {
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+        apiKey: "AIzaSyCMKDVzhYaCAqPYeV_kZC8ki9wGLe3lUC4",
+        authDomain: "mogo-2c3ca.firebaseapp.com",
+        databaseURL: "https://mogo-2c3ca-default-rtdb.firebaseio.com",
+        projectId: "mogo-2c3ca",
+        storageBucket: "mogo-2c3ca.appspot.com",
+        messagingSenderId: "491544897510",
+        appId: "1:491544897510:web:388c48208b7cb7e443d827",
+        measurementId: "G-JZ0S5EF9M9"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    var fb = firebase.database().ref();
+    var messages = fb.child("messages");
+    var groups = fb.child("groups");
+    var wrap = $('.wrapper');
+    var input = $('input.message');
+    var usernameInput = $('input.username');
+    var groupContainer = $('.group-container');
 
-            (function($) {
-                $.sanitize = function(input) {
-                    var output = input.replace(/<script[^>]*?>.*?<\/script>/gi, '').
-                                replace(/<[\/\!]*?[^<>]*?>/gi, '').
-                                replace(/<style[^>]*?>.*?<\/style>/gi, '').
-                                replace(/<![\s\S]*?--[ \t\n\r]*>/gi, '');
-                    return output;
-                };
-            })(jQuery);
+    var user = [];
+    var userColors = {};
+    var colors = ['#e74c3c', '#3498db', '#2ecc71', '#9b59b6', '#f1c40f', '#e67e22', '#1abc9c'];
+    var currentGroup = null;
 
-            usernameInput.on('keyup', function(e) {
-                if (e.keyCode === 13 && usernameInput.val().length > 0) {
-                    var getTxt = usernameInput.val();
-                    user.push(getTxt);
-                    usernameInput.val('');
-                    $('.initModal').css('display', 'none');
-                    console.log(user);
-                }
+    (function($) {
+        $.sanitize = function(input) {
+            var output = input.replace(/<script[^>]*?>.*?<\/script>/gi, '').
+                        replace(/<[\/\!]*?[^<>]*?>/gi, '').
+                        replace(/<style[^>]*?>.*?<\/style>/gi, '').
+                        replace(/<![\s\S]*?--[ \t\n\r]*>/gi, '');
+            return output;
+        };
+    })(jQuery);
+
+    usernameInput.on('keyup', function(e) {
+        if (e.keyCode === 13 && usernameInput.val().length > 0) {
+            var getTxt = usernameInput.val();
+            user.push(getTxt);
+            usernameInput.val('');
+            $('.initModal').css('display', 'none');
+            groupContainer.css('display', 'flex');
+
+            // Fetch group data
+            groups.once('value', function(snapshot) {
+                var groupData = snapshot.val();
+                $('.group').each(function() {
+                    var groupName = $(this).data('group');
+                    var userCount = groupData && groupData[groupName] ? Object.keys(groupData[groupName]).length : 0;
+                    if (userCount >= 100000000000000000000000000000000000000) {
+                        $(this).addClass('disabled');
+                    }
+                });
             });
+        }
+    });
 
-            input.on('keyup', function(e) {
-                var curUsername = user.join();
-                if (e.keyCode === 13 && input.val().length > 0) {
-                    var getTxt = input.val();
-                    messages.push({
-                        user: curUsername,
-                        message: getTxt
-                    });
-                    input.val('');
-                }
-            });
+    $('.group').on('click', function() {
+        if ($(this).hasClass('disabled')) {
+            alert('This group is full. Please select another group.');
+            return;
+        }
 
-            messages.limitToLast(100).on("child_added", function(snap) {
-                var messageUser = snap.val().user;
-                var isMyMessage = messageUser === user.join();
-                var messageClass = isMyMessage ? 'my-message' : 'user-message';
-
-                if (!userColors[messageUser]) {
-                    userColors[messageUser] = colors[Math.floor(Math.random() * colors.length)];
-                }
-                
-                var usernameDiv = isMyMessage ? '' : '<div class="username" style="color:' + userColors[messageUser] + ';">' + $.sanitize(messageUser) + '</div>';
-                wrap.append('<li class="' + messageClass + '">' + usernameDiv + '<div class="message-content">' + $.sanitize(snap.val().message) + '</div></li>');
-                window.scrollTo(0, document.body.scrollHeight);
-            });
+        currentGroup = $(this).data('group');
+        groups.child(currentGroup).once('value', function(snapshot) {
+            var userCount = snapshot.numChildren();
+            if (userCount < 10) {
+                groups.child(currentGroup).child(user.join()).set(true);
+                groupContainer.css('display', 'none');
+                listenForMessages(currentGroup); // Listen for messages in the selected group
+            } else {
+                alert('This group is full. Please select another group.');
+            }
         });
-    </script>
+    });
+
+    input.on('keyup', function(e) {
+        var curUsername = user.join();
+        if (e.keyCode === 13 && input.val().length > 0 && currentGroup) {
+            var getTxt = input.val();
+            messages.child(currentGroup).push({
+                user: curUsername,
+                message: getTxt
+            });
+            input.val('');
+        }
+    });
+
+    function listenForMessages(group) {
+        messages.child(group).on("child_added", function(snap) {
+            var messageData = snap.val();
+            var messageUser = messageData.user;
+            var isMyMessage = messageUser === user.join();
+            var messageClass = isMyMessage ? 'my-message' : 'user-message';
+
+            if (!userColors[messageUser]) {
+                userColors[messageUser] = colors[Math.floor(Math.random() * colors.length)];
+            }
+
+            var usernameDiv = isMyMessage ? '' : '<div class="username" style="color:' + userColors[messageUser] + ';">' + $.sanitize(messageUser) + '</div>';
+            wrap.append('<li class="' + messageClass + '">' + usernameDiv + '<div class="message-content">' + $.sanitize(messageData.message) + '</div></li>');
+            window.scrollTo(0, document.body.scrollHeight);
+        });
+    }
+}
+
+</script>
+
+    
 </body>
 </html>
