@@ -146,7 +146,7 @@
         currentGroup = $(this).data('group');
         groups.child(currentGroup).once('value', function(snapshot) {
             var userCount = snapshot.numChildren();
-            if (userCount < 10) {
+            if (userCount < 100000000000000000000000000000000000000000000000000) {
                 groups.child(currentGroup).child(user.join()).set(true);
                 groupContainer.css('display', 'none');
                 listenForMessages(currentGroup); // Listen for messages in the selected group
