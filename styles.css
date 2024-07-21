@@ -68,23 +68,30 @@ li {
 }
 
 li.user-message {
-    background: linear-gradient(15deg, #000000 0%, #000000 100%);
-    color: white;
+    background: linear-gradient(15deg, #ffffff 0%, #ffffff 100%);
+    color: rgb(0, 0, 0);
     background-color: #dfe6e9;
     text-align: left;
     margin-right: auto;
     width: 240px;
+    margin-top: 20px;
+    word-break: break-word; /* Ensures long words are properly broken */
+    white-space: pre-wrap;  /* Preserves whitespace and ensures wrapping */
 }
 
 li.my-message {
-    background: linear-gradient(15deg, #1c1b1b 0%, #000000 100%);
-    color: white;
+    background: linear-gradient(15deg, #ffffff 0%, #ffffff 100%);
+    color: rgb(0, 0, 0);
     background-color: #74b9ff;
-    text-align: right;
+    text-align: left; /* Corrected to left alignment */
     margin-left: auto;
     align-self: flex-end;
-    width: 200px;
+    width: 240px;
+    margin-top: 20px;
+    word-break: break-word; /* Ensures long words are properly broken */
+    white-space: pre-wrap;  /* Preserves whitespace and ensures wrapping */
 }
+
 header h1{
     display: flex;
     justify-content: center;
